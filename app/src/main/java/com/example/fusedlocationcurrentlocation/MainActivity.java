@@ -23,7 +23,7 @@ import com.google.android.gms.location.LocationServices;
 
 public class MainActivity extends AppCompatActivity {
     PermissionUtils permissionUtils;
-    int Location_Permission_Code = 100;
+    int Location_Permission_Code = 101;
     FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
     TextView textLat, textLon;
