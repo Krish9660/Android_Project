@@ -23,7 +23,7 @@ import com.google.android.gms.location.LocationServices;
 
 public class MainActivity extends AppCompatActivity {
     PermissionUtils permissionUtils;
-    int Location_Permission_Code = 101;
+    int Location_Permission_Code = 10101001;
     FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
     TextView textLat, textLon;
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    Toast.makeText(this, "permission not Granted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show();
                 }
 
             }
