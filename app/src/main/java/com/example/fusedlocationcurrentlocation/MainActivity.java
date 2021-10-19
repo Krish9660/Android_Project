@@ -7,11 +7,14 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,17 +28,19 @@ public class MainActivity extends AppCompatActivity {
     PermissionUtils permissionUtils;
     int Location_Permission_Code = 10101001;
     FusedLocationProviderClient fusedLocationProviderClient;
-    LocationRequest locationRequest;
+    LocationRequest locationReq;
     TextView textLat, textLon;
     Context context;
+    Button btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textLat = (TextView) findViewById(R.id.txt);
         textLon = (TextView) findViewById(R.id.txt1);
+        btn=(Button)findViewById(R.id.btn);
         permissionUtils=new PermissionUtils();
-        locationRequest=new LocationRequest();
+        locationReq=new LocationRequest();
 //        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         if (permissionUtils.isAccessFineLocationGranted(this)) {
             if (permissionUtils.isLocationEnabled(this)) {
@@ -46,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
             permissionUtils.requestAccessFineLocationPermission(this, Location_Permission_Code);
         }
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,MainActivity2.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -57,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("MissingPermission")
     private void setUpLocationListner() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        locationRequest.setInterval(2000).setFastestInterval(2000).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationReq.setInterval(2000).setFastestInterval(2000).setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -69,16 +81,16 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-            fusedLocationProviderClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+            fusedLocationProviderClient.requestLocationUpdates(locationReq, new LocationCallback() {
                 @Override
                 public void onLocationResult(@NonNull LocationResult locationResult) {
                     super.onLocationResult(locationResult);
                     for (Location location : locationResult.getLocations()) {
-                        double lattitude = location.getLatitude();
-                        double longitude = location.getLongitude();
-                        textLat.setText(String.valueOf(lattitude));
-                        textLon.setText(String.valueOf(longitude));
-                        Log.d("MainActivity", "lat:" + lattitude + " lon:" + longitude);
+                        double la = location.getLatitude();
+                        double lo = location.getLongitude();
+                        textLat.setText(String.valueOf(la));
+                        textLon.setText(String.valueOf(lo));
+                        Log.d("MainActivity", "lat:" + la + " lon:" + lo);
 
 
                     }
